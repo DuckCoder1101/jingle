@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Talk Center</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="../style/index.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="msgOptions" id="msgOptions">
+      <button id="delete">Del.</button>
+      <button id="read">Ler</button>
+      <button id="find">Pesquisar</button>
+    </div>
+
+    <div id="options" class="options">
+      <a id="optsCloseMsg">Para fechar, aperte <b>esc</b>.</a>
+      <div class="opts_list">
+        <br>
+        <button>Perfil e status</button> <br>
+        <button>Conta</button> <br>
+        <button>Segurança e IA</button> <br>
+        <button>Tema e perssonalização</button> <br>
+        <button>Som e notificações</button> <br>
+        <button>Créditos</button> <br>
+        <button id="closeOptions">Fechar</button>
+      </div>
+
+      <div class="options_frame"></div>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="talks" id="talks">
+      <div class="contacts">
+        <img scr="" alt="">
+        <button id="contacts">Contatos</button>
+      </div>
+    </div>
+
+    <div class="profile" id="profile">
+      <img class="profile_avatar" src="" id="avatar" alt="avatar">
+      <div class="publicStatusIcon" id="publicStatus"></div>
+      <b class="profile_username" id="username"></b>
+    </div>
+
+    <div class="inputs">
+      <div class="messageInput">
+        <input type="text" id="InputMessage" placeholder="Selecione ou crie uma conversa" readonly>
+      </div>
+      <button class="EmojiButton" id="EmojiButton"></button>
+      <button class="send" id="send">📨</button>
+    </div>
+
+    <div class="emojis" id="emojis"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="../scripts/index.script.js"></script>
+</body>
+
+</html>

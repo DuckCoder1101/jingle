@@ -1,0 +1,514 @@
+@keyframes showEmojis {
+    from {
+        bottom: -50px;
+        background-color: transparent;
+        border: transparent;
+        overflow-y: hidden;
+    }
+
+    to {
+        bottom: 50px;
+        transform: translateY(5);
+        background-color: rgba(255, 255, 255, .3);
+        border: black;
+        overflow-y: auto;
+    }
+}
+
+@keyframes hideEmojis {
+    from {
+        bottom: 50px;
+        transform: translateY(5);
+        background-color: rgba(255, 255, 255, .3);
+        border: black;
+        overflow-y: auto;
+    }
+
+    to {
+        bottom: -50px;
+        background-color: transparent;
+        border: transparent;
+        overflow-y: hidden;
+    }
+}
+
+@keyframes showMsgOptions {
+    from {
+        transform: translateY(60px);
+    }
+
+    to {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes hideMsgOptions {
+    from {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(60px);
+    }
+}
+
+a,
+p,
+textarea,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Arial;
+}
+
+body, html {
+    background: linear-gradient(90deg, #4D6BFA 20%, #4DC6FA 60%, #5A4AF0);
+}
+
+.container {
+    position: absolute;
+    display: block;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+}
+
+.messages {
+    position: absolute;
+    display: inline-block;
+    right: 0px;
+    top: 0px;
+    width: calc(85% - 1px);
+    min-height: calc(100% - 50px);
+    border-left: 1px solid black;
+    background: transparent;
+    overflow-y: auto;
+}
+
+.message {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    flex-grow: 5;
+    margin: 5px;
+    width: 98%;
+    min-height: 30px;
+    background-color: transparent;
+    border: 0;
+    border-radius: 20px;
+    transition: 200ms;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.message:hover {
+    background-color: rgba(255, 255, 255, .25);
+}
+
+.message .info {
+    position: relative;
+    display: flex;
+    top: 0px;
+    width: 100%;
+    height: 32px;
+    align-items: center;
+}
+
+.message .content {
+    position: relative;
+    max-width: 100%;
+    height: auto;
+    margin: 2px;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.info .author_photo {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 50%;
+    margin-left: 3px;
+    margin-right: 5px;
+}
+
+.info .author_name {
+    position: relative;
+    width: auto;
+    font-family: arial;
+    font-size: small;
+    margin-right: 84%;
+}
+
+.info .time {
+    position: relative;
+    width: auto;
+    font-family: arial;
+    font-size: small;
+}
+
+.talks {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    left: 0px;
+    top: 0px;
+    width: 15%;
+    height: 90%;
+    background-color: #5291e4;
+    align-items: center;
+}
+
+.talk {
+    position: relative;
+    width: 98%;
+    height: 60px;
+    transition: all 250ms;
+    border: 0;
+    border-radius: 22px;
+}
+
+.talk:hover {
+    background-color: rgba(255, 255, 255, .3);
+}
+
+.talk * {
+    position: relative;
+    margin-left: 12px;
+}
+
+.contacts {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 22px;
+    width: 98%;
+    height: 55px;
+    margin: 5px;
+    transition: all 250ms;
+}
+
+.contacts:hover {
+    background-color: rgba(255, 255, 255, .3);
+}
+
+.contacts img {
+    position: relative;
+    border: 0;
+    background-color: transparent;
+    width: 2vw;
+    height: 2vw;
+    border-radius: 50%;
+    margin: 0;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.contacts button {
+    position: relative;
+    background-color: transparent;
+    width: auto;
+    border: 0;
+    font-size: 1.2vw;
+    font-family: Arial;
+    font-weight: 400;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.profile {
+    position: fixed;
+    display: flex;
+    left: 0px;
+    bottom: 0px;
+    width: 15%;
+    height: calc(10% - 1px);
+    border-top: 1px solid black;
+    background-color: #3881e0;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile_avatar {
+    position: relative;
+    margin: 6px;
+    width: 55px;
+    height: 55px;
+    border: 0;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: all 250ms;
+}
+
+.profile_avatar:hover {
+    transform: scale(1.1);
+}
+
+.profile_username {
+    position: relative;
+    margin: 3px;
+    margin-top: 8px;
+    font-family: Arial;
+    font-size: 1.2vw;
+    font-weight: 600px;
+    width: auto;
+    max-width: calc(85% - 55px);
+    height: auto;
+    background-color: transparent;
+    border: 0 transparent;
+    transition: all 250ms;
+}
+
+.profile_username:hover {
+    transform: translateY(-8%);
+    border-bottom: 1px solid black;
+}
+
+.publicStatusIcon {
+    position: relative;
+    margin: 5px;
+    margin-top: 8px;
+    width: 25px;
+    height: 25px;
+    border: .1vw transparent solid;
+    border-radius: 50%;
+    transition: all 280ms;
+}
+
+.publicStatusIcon:hover {
+    transform: scale(1.2);
+    border-color: rgba(255, 255, 255, .4);
+}
+
+.inputs {
+    position: fixed;
+    display: flex;
+    padding: 0;
+    width: calc(85%);
+    height: 50px;
+    border: 0;
+    border-top: 1px solid black;
+    background-color: #3881e0;
+    bottom: 0px;
+    right: 0px;
+    resize: none;
+    overflow-y: hidden;
+    z-index: 5;
+    align-items: center;
+    opacity: 1;
+}
+
+.messageInput {
+    position: relative;
+    display: flex;
+    width: 90%;
+    height: 82%;
+    overflow-y: hidden;
+    background-color: white;
+    border: 0;
+    border-radius: 16px;
+    margin-left: 8px;
+    margin-right: 12px;
+    align-items: center;
+    opacity: .4;
+    transition: all 320ms;
+}
+
+.messageInput input {
+    position: relative;
+    width: 100%;
+    height: 50%;
+    text-decoration: inherit;
+    outline: none;
+    overflow: auto;
+    font-size: 0.8vw;
+    margin-left: 10px;
+    border: 0;
+}
+
+.send {
+    position: relative;
+    width: 45px;
+    height: 34px;
+    border: 0;
+    background-color: transparent;
+    font-size: larger;
+    text-align: center;
+    transition: 320ms;
+    margin-left: 10px;
+    opacity: .4;
+}
+
+.send:hover {
+    transform: scale(1.2);
+}
+
+.emojis {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 0.2;
+    right: 20px;
+    bottom: -50px;
+    width: 135px;
+    max-height: 100px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    background-color: transparent;
+    animation: 350ms forwards ease-in-out;
+    z-index: 0;
+}
+
+.emojis * {
+    position: relative;
+    margin: 5px;
+    width: 26px;
+    height: 26px;
+    border: 0;
+    user-select: none;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: 250ms;
+    text-align: center;
+    font-size: large;
+}
+
+.emojis *:hover {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, .5)
+}
+
+.EmojiButton {
+    position: relative;
+    height: 34px;
+    width: 34px;
+    border: 0;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: 300ms;
+    font-size: large;
+}
+
+.EmojiButton:hover {
+    transform: scale(1.2);
+}
+
+.options {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
+    background-color: #3881e0;
+    padding: 0;
+    margin: 0;
+    left: 0;
+    top: 0;
+    transition: opacity 400ms;
+    opacity: 0;
+}
+
+.options a {
+    position: absolute;
+    z-index: 12;
+    bottom: 40px;
+    left: 45.4%;
+    font-size: large;
+    width: auto;
+    height: 20px;
+    animation: 500ms ease-in-out forwards;
+}
+
+.opts_list {
+    position: relative;
+    display: block;
+    flex-direction: column;
+    width: 30%;
+    height: 100%;
+    left: 0;
+    overflow-y: auto;
+    background: linear-gradient(90deg, rgba(143, 142, 142, .47) 70%, #3881e0);
+    border: 0;
+    border-right: 1px;
+}
+
+.opts_list * {
+    position: relative;
+    width: auto;
+    height: 30px;
+    text-align: left;
+    font-size: large;
+    font-weight: 600;
+    font-family: Arial;
+    background-color: transparent;
+    border: 0 transparent;
+    margin: 8px;
+    transition: all 350ms;
+}
+
+.opts_list *:not(#closeOptions):hover {
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+.opts_list #closeOptions {
+    margin-top: 30px;
+    border-radius: 20px;
+}
+
+.opts_list #closeOptions:hover {
+    color: rgb(250, 40, 40);
+}
+
+.opts_list *:active {
+    background-color: rgba(190, 189, 189, 0.25);
+}
+
+.options_frame {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    height: 100%;
+    right: 0;
+}
+
+.msgOptions {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 100px;
+    opacity: 0;
+    z-index: -5;
+    transition: opacity 280ms;
+    border: 1px solid black;
+    border-radius: 12px;
+    background-color: background-color: rgba(255, 255, 255, .4);
+}
+
+.msgOptions * {
+    position: relative;
+    width: 100%;
+    height: calc(100% / 4);
+    margin: 0;
+    margin-top: 4px;
+    border: 0;
+    background-color: transparent;
+    border-radius: 20px;
+}
+
+.msgOptions *:hover {
+    background-color: rgba(255, 255, 255, .6);
+}
