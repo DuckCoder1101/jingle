@@ -2,8 +2,10 @@
 <html>
 
 <head>
-  <title>Talk Center</title>
+  <title>Jingle</title>
   <meta charset="UTF-8" />
+
+  <link rel="stylesheet" href="../style/global.css">
   <link rel="stylesheet" href="../style/index.css">
 </head>
 
@@ -18,8 +20,10 @@
 
     <div id="options" class="options">
       <a id="optsCloseMsg">Para fechar, aperte <b>esc</b>.</a>
+
       <div class="opts_list">
         <br>
+
         <button>Perfil e status</button> <br>
         <button>Conta</button> <br>
         <button>Segurança e IA</button> <br>
@@ -36,7 +40,7 @@
 
     <div class="talks" id="talks">
       <div class="contacts">
-        <img scr="" alt="">
+        <img src="../contacts.png" alt="">
         <button id="contacts">Contatos</button>
       </div>
     </div>
@@ -48,18 +52,22 @@
     </div>
 
     <div class="inputs">
+
       <div class="messageInput">
         <input type="text" id="InputMessage" placeholder="Selecione ou crie uma conversa" readonly>
       </div>
+      
       <button class="EmojiButton" id="EmojiButton"></button>
-      <button class="send" id="send">📨</button>
+      <button class="send" id="send">Enviar</button>
     </div>
 
     <div class="emojis" id="emojis"></div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script 
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+    crossorigin="anonymous"></script>
   <script src="../scripts/index.script.js"></script>
 </body>
 

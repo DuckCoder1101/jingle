@@ -74,7 +74,7 @@ window.onload = () => {
         profileinfo = data;
 
         if (!profileinfo.avatar || !profileinfo.avatar.length == 0) {
-          document.getElementById("avatar").setAttribute("src", "../Icon.png");
+          document.getElementById("avatar").setAttribute("src", "../contacts.png");
         }
 
         else {
@@ -87,11 +87,11 @@ window.onload = () => {
                 break;
             
             case "invisivel":
-                document.getElementById("publicStatus").style.backgroundColor = "light-gray";
+                document.getElementById("publicStatus").style.backgroundColor = "rgb(190, 190, 190)";
                 break;
             
             case "nao_perturbe":
-                document.getElementById("publicStatus").style.backgroundColor = "red";
+                document.getElementById("publicStatus").style.backgroundColor = "rgb(50, 50, 50)";
                 break;
         }     
 
@@ -127,11 +127,11 @@ window.onload = () => {
                 break;
 
             case "invisivel":
-                document.getElementById("publicStatus").style.backgroundColor = "light-gray";
+                document.getElementById("publicStatus").style.backgroundColor = "rgb(190, 190, 190)";
                 break;
 
             case "nao_perturbe":
-                document.getElementById("publicStatus").style.backgroundColor = "red";
+                document.getElementById("publicStatus").style.backgroundColor = "rgb(50, 50, 50)";
                 break;
         }
 
@@ -147,22 +147,6 @@ const send_message = () => {
     let NewMessage = messages.appendChild(document.createElement("div"));
 
     NewMessage.className = "message";
-    NewMessage.onmousedown = (event) => {
-
-        if (event.button == 2) {
-
-            messageOptions.style.top  = event.clientY + "px";
-            messageOptions.style.left = event.clientX + "px";
-
-            messageOptions.style.opacity = "1";
-            messageOptions.style.zIndex  = "10";
-
-            messageOptions.onmouseleave = () => {
-                messageOptions.style.opacity = "0";
-                messageOptions.style.zIndex  = "-5";
-            };
-        }
-    };
 
     let InfoArea       = NewMessage.appendChild(document.createElement("div"));
     InfoArea.className = "info";
@@ -178,7 +162,7 @@ const send_message = () => {
     }
 
     else {
-        author_photo.scr  = "../Icon.png";
+        author_photo.src  = "../contacts.png";
     }
 
     author_photo.className = "author_photo";
@@ -221,24 +205,7 @@ const post_messages = (messages_array) => {
     for (let msg of messages_array) {
 
         let NewMessage = messages.appendChild(document.createElement("div"));
-
-        NewMessage.className   = "message";
-        NewMessage.onmousedown = (event) => {
-
-            if (event.button == 2) {
-
-                messageOptions.style.top  = event.clientY + "px";
-                messageOptions.style.left = event.clientX + "px";
-
-                messageOptions.style.opacity = "1";
-                messageOptions.style.zIndex  = "10";
-
-                messageOptions.onmouseleave = () => {
-                    messageOptions.style.opacity = "0";
-                    messageOptions.style.zIndex  = "-5";
-                };
-            }
-        };
+        NewMessage.className = "message";
 
         let InfoArea       = NewMessage.appendChild(document.createElement("div"));
         InfoArea.className = "info";
@@ -254,7 +221,7 @@ const post_messages = (messages_array) => {
         }
 
         else {
-            author_photo.scr = "../Icon.png";
+            author_photo.src = "../contacts.png";
         }
 
         author_photo.className = "author_photo";
@@ -278,6 +245,22 @@ const post_messages = (messages_array) => {
             att.alt       = "file";
         }
     }
+
+    $(".message").on("click", (event) => {
+        if (event.button == 2) {
+
+            messageOptions.style.top = event.clientY + "px";
+            messageOptions.style.left = event.clientX + "px";
+
+            messageOptions.style.opacity = "1";
+            messageOptions.style.zIndex = "10";
+
+            messageOptions.onmouseleave = () => {
+                messageOptions.style.opacity = "0";
+                messageOptions.style.zIndex = "-5";
+            };
+        }
+    });
 };
 
 const selectTalk = (event) => {

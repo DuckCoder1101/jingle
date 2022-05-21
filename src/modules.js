@@ -1,17 +1,17 @@
 
 
-const { 
-    app, 
-    BrowserWindow, 
-    Tray, Menu, 
+const {
+    app,
+    BrowserWindow,
+    Tray, Menu,
     ipcMain,
     dialog,
     Notification } = require("electron");
 
-const storage  = require("electron-json-storage");
-const isDev    = require("electron-is-dev");
-const Index    = require("./index");
-const axios    = require("axios");
+const storage = require("electron-json-storage");
+const isDev = require("electron-is-dev");
+const Index = require("./index");
+const axios = require("axios");
 const { join } = require("path");
 
 let menuTray = null;
@@ -38,7 +38,7 @@ const file_exports = {
                 if (result == "Tentar novamente") this.quit();
                 else if (process.platform != "darwin") {
                     app.quit();
-                } 
+                }
             }
 
             else if (process.platform != "darwin") {
@@ -51,38 +51,7 @@ const file_exports = {
 
         if (!key) return new Error("No key specified.");
 
-       /*storage.set("profile", {
-            username: "DuckCoder1101",
-            email: "duckcoder1101@gmail.com",
-            avatar: "",
-            id: "owner_0101",
-            contacts: [
-                {
-                    username: "Random Contact",
-                    id: "2245667",
-                    haveAnActiveTalk: true,
-                    messages: [
-                        {
-                            author: "DuckCoder1101",
-                            contact: "Random Contact",
-                            content: "Oi eae?",
-                            time: "02/03/2022 às 13:40",
-                            attachments: []
-                        }
-                    ]
-                }
-            ],
-            options: {
-                notify_when_close: false
-            },
-            session: {
-                new: "",
-                old: ""
-            }
-        });*/
-
         let data = storage.getSync(key);
-
         return data;
     },
 
@@ -93,15 +62,15 @@ const file_exports = {
         }
 
         catch (err) {
-            //...
+            this.quit(err);
         }
     },
 
-    new_account: () => {      
+    new_account: () => {
         let window = new BrowserWindow({
             width: 800,
             height: 600,
-            title: "Talk Center",
+            title: app.getName(),
             fullscreen: false,
             autoHideMenuBar: true,
             webPreferences: {
@@ -122,7 +91,7 @@ const file_exports = {
     },
 
     create_tray: () => {
-        menuTray = new Tray(join(__dirname, "../public/circle.png"));
+        menuTray = new Tray(Index.icon);
 
         const contextMenu = Menu.buildFromTemplate([
             {
@@ -154,7 +123,7 @@ const file_exports = {
 
                                 contextMenu.getMenuItemById("status").submenu.items.forEach(item => item.checked = false);
                                 contextMenu.getMenuItemById("status").submenu.getMenuItemById("nao_perturbe").checked = true;
-                                
+
                                 BrowserWindow.getAllWindows()[0].webContents.send("change_status", "nao_perturbe");
                             }
                         }
@@ -177,7 +146,6 @@ const file_exports = {
     },
 
     get_messages: async () => {
-    
         try {
             let response = await axios.default.post("", {
                 profile: {
@@ -193,7 +161,7 @@ const file_exports = {
 
             for (let talk of Object.keys(response.data.talks)) {
                 let talkData = Index.profile_data.contacts.find(c => c.id == talk.id);
-    
+
                 if (!talkData) continue;
 
                 if (!talkData.haveAnActiveTalk) {
@@ -213,7 +181,7 @@ const file_exports = {
                 title: app.getName(),
                 subtitle: "Você tem novas mensagens.",
                 body: messages_authors.join(", "),
-                icon: join(__dirname, "../public/Icon.png"),
+                icon: Index.icon,
                 timeoutType: "default",
                 urgency: "normal"
             });
@@ -233,7 +201,7 @@ const file_exports = {
             let res = dialog.showMessageBoxSync(BrowserWindow.getAllWindows()[0], {
                 title: "Erro de pesquisa!",
                 message: "Um erro ocorreu enquanto buscavamos suas mensagens, entre em contacto com o suporte para saber mais.",
-                buttons: ["Ok", "Reiniciar o app"],
+                buttons: ["Ok", "Reiniciar o Jingle"],
                 type: "error"
             });
 
@@ -247,10 +215,10 @@ const file_exports = {
     verify_data: async () => {
 
         let profile_data = file_exports.get("profile");
-        let schema = [ "username", "id", "email", "avatar", "contacts", "options" ];
+        let schema = ["username", "id", "email", "avatar", "contacts", "options"];
 
         for (let info of schema) {
-        
+
             if (!profile_data[info]) {
                 await file_exports.set("profile", {
                     username: "",

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Talk Center
+// Copyright (c) 2022 Jingle
 
 
 // Modules and Libraries
@@ -13,20 +13,18 @@ const { join }   = require("path");
 var profile_data = get("profile");
 var mainWindow = null;
 
-
 // Other Functions
 
 const wait = time => new Promise(resolve => setTimeout(resolve, time));
 
-
-// Starts the Talk Center
+// Starts the Jingle
 async function Main(callback) {
   try {
 
     if (!profile_data || Object.keys(profile_data).length == 0) return new_account();
 
-    let activeTalks = await profile_data.contacts.filter(c => c.haveAnActiveTalk === true);
 
+    let activeTalks = await profile_data.contacts.filter(c => c.haveAnActiveTalk === true);
 
     // Main Window
     mainWindow = new BrowserWindow({
@@ -48,7 +46,6 @@ async function Main(callback) {
     await mainWindow.setIcon(exports.icon);
     await create_tray();
 
-
     // Web contents
 
     await mainWindow.webContents.send("send_profile", {
@@ -64,14 +61,12 @@ async function Main(callback) {
     await mainWindow.setOpacity(1);
     mainWindow.maximize();
 
-
     // Successfully created the window
     await callback(null);
 
-
     // IPC Main
 
-    ipcMain.on("send_message", (event, message_info) => {
+    ipcMain.on("send_message", (event_, message_info) => {
 
       if (!message_info.content || message_info.content.trim().length == 0) return;
       if (!message_info.contact_id || !message_info.time) return;
@@ -103,7 +98,6 @@ async function Main(callback) {
 
       mainWindow.webContents.send("get_messages", messages);
     });
-
 
     // Other events
 
@@ -149,8 +143,8 @@ async function Main(callback) {
       else {
         notification = new Notification({
           title: app.getName(),
-          body: "O app está sendo executado em segundo plano.",
-          icon: join(__dirname, "../public/256_256.ico"),
+          body: "Jingle está sendo executado em segundo plano.",
+          icon: exports.icon,
           timeoutType: "default",
           actions: [{ type: "button", text: "Não exibir novamente." }, { type: "button", text: "Ok" }]
         });
@@ -162,8 +156,8 @@ async function Main(callback) {
       if (notification) notification.close();
     });
     
-    setInterval(() => set("profile", profile_data), 1000 * 60 * 5);
-    setInterval(get_messages, 4000);
+    setInterval(() => set("profile", profile_data), 1000 * 60 * 2.5);
+    setInterval(get_messages, 5000);
   }
 
   catch (err) {
@@ -177,7 +171,7 @@ app.on("ready", async () => {
 
     // Set the app model ID and the app name
     await app.setAppUserModelId(process.execPath);
-    await app.setName("Talk Center");
+    await app.setName("Jingle");
 
     // Set the title of the process
     process.title = await app.getName();
@@ -186,7 +180,7 @@ app.on("ready", async () => {
     // Loading Screen
     const loagingScreen = new BrowserWindow({
       width: 490,
-      height: 290, 
+      height: 320, 
       title: app.getName(),
       autoHideMenuBar: true,
       frame: false, 
@@ -212,12 +206,15 @@ app.on("ready", async () => {
     }
 
     else {
-      Main((err) => {
+
+      await wait(5500);
+
+      /*Main((err) => {
 
         if (err) return quit(err);
 
         loagingScreen.destroy();
-      });
+      });*/
     }
   }
 
@@ -249,4 +246,4 @@ exports.profile_data = profile_data;
 
 exports.icon = nativeImage
   .createFromPath(join(__dirname, "../public/icon.png"))
-  .resize({ width: 256, height: 256, quuality: "better" });
+  .resize({ width: 500, height: 500, quuality: "better" });

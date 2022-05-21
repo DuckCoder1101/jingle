@@ -64,7 +64,7 @@ h6 {
 }
 
 body, html {
-    background: linear-gradient(90deg, #4D6BFA 20%, #4DC6FA 60%, #5A4AF0);
+    background: white;
 }
 
 .container {
@@ -83,31 +83,28 @@ body, html {
     right: 0px;
     top: 0px;
     width: calc(85% - 1px);
-    min-height: calc(100% - 50px);
+    min-height: calc(100% - 55px);
     border-left: 1px solid black;
-    background: transparent;
+    background: linear-gradient(90deg, #4A4AF0, rgb(101, 238, 230), #2D6BFA);
     overflow-y: auto;
 }
 
 .message {
     position: relative;
     display: flex;
-    flex: 1;
     flex-wrap: wrap;
     flex-grow: 5;
-    margin: 5px;
-    width: 98%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
     min-height: 30px;
-    background-color: transparent;
+    background: rgba(113, 131, 154, .6);
     border: 0;
-    border-radius: 20px;
     transition: 200ms;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .message:hover {
-    background-color: rgba(255, 255, 255, .25);
+    background: rgb(63, 81, 104);
 }
 
 .message .info {
@@ -161,7 +158,7 @@ body, html {
     top: 0px;
     width: 15%;
     height: 90%;
-    background-color: #5291e4;
+    background: linear-gradient(180deg, #4D6BFA, #3E68C9);
     align-items: center;
 }
 
@@ -202,14 +199,12 @@ body, html {
 
 .contacts img {
     position: relative;
+    width: 2.5vw;
+    height: 2.5vw;
     border: 0;
+    border-radius: 42%;
     background-color: transparent;
-    width: 2vw;
-    height: 2vw;
-    border-radius: 50%;
-    margin: 0;
-    margin-left: 8px;
-    margin-right: 8px;
+    margin: 5px;
 }
 
 .contacts button {
@@ -217,11 +212,10 @@ body, html {
     background-color: transparent;
     width: auto;
     border: 0;
-    font-size: 1.2vw;
-    font-family: Arial;
-    font-weight: 400;
-    margin-left: 8px;
-    margin-right: 8px;
+    font-size: 1.5vw;
+    font-family: Helvetica;
+    font-weight: 500;
+    margin: 5px;
 }
 
 .profile {
@@ -230,16 +224,15 @@ body, html {
     left: 0px;
     bottom: 0px;
     width: 15%;
-    height: calc(10% - 1px);
-    border-top: 1px solid black;
-    background-color: #3881e0;
+    height: 10%;
+    background-color: #3E68C9;
     align-items: center;
     justify-content: center;
 }
 
 .profile_avatar {
     position: relative;
-    margin: 6px;
+    margin: 5px;
     width: 55px;
     height: 55px;
     border: 0;
@@ -254,7 +247,7 @@ body, html {
 
 .profile_username {
     position: relative;
-    margin: 3px;
+    margin: 5px;
     margin-top: 8px;
     font-family: Arial;
     font-size: 1.2vw;
@@ -278,14 +271,15 @@ body, html {
     margin-top: 8px;
     width: 25px;
     height: 25px;
-    border: .1vw transparent solid;
+    border: 0px;
     border-radius: 50%;
-    transition: all 280ms;
+    padding: 0;
+    overline: none;
+    transition: 300ms;
 }
 
 .publicStatusIcon:hover {
     transform: scale(1.2);
-    border-color: rgba(255, 255, 255, .4);
 }
 
 .inputs {
@@ -293,10 +287,10 @@ body, html {
     display: flex;
     padding: 0;
     width: calc(85%);
-    height: 50px;
+    height: 55px;
     border: 0;
     border-top: 1px solid black;
-    background-color: #3881e0;
+    background-color: #3E68C9;
     bottom: 0px;
     right: 0px;
     resize: none;
@@ -310,7 +304,7 @@ body, html {
     position: relative;
     display: flex;
     width: 90%;
-    height: 82%;
+    height: 78%;
     overflow-y: hidden;
     background-color: white;
     border: 0;
@@ -336,19 +330,20 @@ body, html {
 
 .send {
     position: relative;
-    width: 45px;
-    height: 34px;
+    width: auto;
+    height: 33px;
     border: 0;
-    background-color: transparent;
-    font-size: larger;
+    border-radius: 8px;
+    background: transparent;
+    font-size: large;
     text-align: center;
-    transition: 320ms;
     margin-left: 10px;
+    color: white;
     opacity: .4;
 }
 
-.send:hover {
-    transform: scale(1.2);
+.send:active {
+    background: rgb(230, 230, 230);
 }
 
 .emojis {
@@ -406,11 +401,11 @@ body, html {
 
 .options {
     position: fixed;
-    display: block;
+    display: flex;
     width: 100%;
     height: 100%;
-    z-index: -5;
-    background-color: #3881e0;
+    z-index: 10;
+    background: rgb(185,236, 214);
     padding: 0;
     margin: 0;
     left: 0;
@@ -434,11 +429,11 @@ body, html {
     position: relative;
     display: block;
     flex-direction: column;
-    width: 30%;
+    width: 18%;
     height: 100%;
     left: 0;
     overflow-y: auto;
-    background: linear-gradient(90deg, rgba(143, 142, 142, .47) 70%, #3881e0);
+    background: linear-gradient(90deg, #6FAFE2, rgb(185,236, 214));
     border: 0;
     border-right: 1px;
 }
@@ -481,7 +476,7 @@ body, html {
     flex-direction: column;
     width: 70%;
     height: 100%;
-    right: 0;
+    margin-left: 12%;
 }
 
 .msgOptions {

@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTa-j2U0lmluP9RWlSytm3ho.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
 @keyframes balls {
     0%, 100% {
         transform: scale(1) translateY(0px);
@@ -17,26 +25,35 @@
     top: 0px;
     left: 0px;
     justify-content:  center;
+    align-items: center;
     overflow: hidden;
     background: linear-gradient(90deg, #84b6f4, #f9d99a);
 }
 
 .icon {
     position: relative;
-    width: 105px;
-    height: 105px;
-    top: 14%;
+    width: 120px;
+    height: 130px;
+    margin: 4%;
+    margin-bottom: 25%;
 }
 
 .title {
     position: relative;
     width: auto;
-    height: 55px;
-    font-size: 48px;
-    font-family: Helvetica;
-    top: 14%;
-    margin-left: 10px;
+    height: auto;
+    font-family: 'Open Sans', Helvetica, Arial, sans;
+    font-size: 15vw;
+    font-weight: 700;
+    text-align: center;
+    margin: 4%;
+    background: linear-gradient(to right, rgb(41, 131, 255, .8), rgba(33, 143, 91, .75));
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 25%;
 }
+
 
 .message {
     position: relative;
@@ -57,17 +74,17 @@
     align-items: center;
     width: 150px;
     height: 60px;
-    bottom: 0%;
+    bottom: 1.5%;
 }
 
 .balls * {
     position: relative;
     margin: 8px;
     margin-bottom: 4px;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     border: 0;
     border-radius: 50%;
-    background-color: rgb(0, 162, 255);
-    animation: balls 1.5s infinite;
+    background-color: rgb(0, 142, 235);
+    animation: 1.5s forwards;
 }

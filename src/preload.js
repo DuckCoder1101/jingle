@@ -1,7 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld(
-    "api", {
+contextBridge.exposeInMainWorld("api", {
     send: (channel, data) => {
         let whiteListChannels = ["send_emojis", "send_talks", "get_messages", "send_message", "change_status"];
 
@@ -9,6 +8,7 @@ contextBridge.exposeInMainWorld(
             ipcRenderer.send(channel, data);
         }
     },
+
     receive: (channel, callback) => {
         let whiteListChannels = ["send_emojis", "send_profile", "send_talks", "get_messages", "send_message", "change_status"];
 
@@ -16,5 +16,4 @@ contextBridge.exposeInMainWorld(
             ipcRenderer.on(channel, (event, data) => callback(event, data));
         }
     }
-}
-)
+});
