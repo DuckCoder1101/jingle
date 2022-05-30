@@ -1,0 +1,50 @@
+{
+    "options": [
+        {
+            "title": "Perfil e status",
+            "description": "Personalize o seu perfil, e o deixe fantástico!",
+            "backup": true,
+            "list": [
+                {
+                    "label": "Nome de usuário",
+                    "input": {
+                        "type": "text",
+                        "id": "username",
+                        "placeholder": "ftc(username)"
+                    }
+                },
+                {
+                    "label": "Status",
+                    "input": {
+                        "type": "text",
+                        "placeholder": "\"Frase filosófica...\""
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Conta",
+            "description": "Configurações da conta Jingle.",
+            "backup": true,
+            "list": []
+        },
+        {
+            "title": "Segurança e IA",
+            "description": "Configurações de segurança da sua conta.",
+            "backup": true,
+            "list": []
+        },
+        {
+            "title": "Tema e personalização",
+            "description": "Deixe o Jingle com a sua cara!",
+            "backup": false,
+            "list": []
+        },
+        {
+            "title": "Som e notificações",
+            "description": "Configurações de som, e alertas de notificação.",
+            "backup": false,
+            "list": []
+        }
+    ]
+}

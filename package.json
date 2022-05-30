@@ -1,8 +1,8 @@
 {
-  "name": "talkcenter",
-  "productName": "talkcenter",
+  "name": "jingle",
+  "productName": "jingle",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Jingle, o app de mensagens de total segurança!",
   "main": "src/index.js",
   "type": "commonjs",
   "scripts": {
@@ -13,7 +13,7 @@
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
-  "author": "Cristian Fava",
+  "author": "Cristian Eduardo Fava",
   "license": "MIT",
   "config": {
     "forge": {

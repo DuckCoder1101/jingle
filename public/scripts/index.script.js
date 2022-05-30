@@ -1,4 +1,4 @@
-// Copyright (c) 2022 TalkCenter
+// Copyright (c) 2022 Jingle
 
 var profileinfo    = { username: null, avatar: null };
 var isEmojiOpen    = false;
@@ -9,18 +9,18 @@ var profile        = null;
 var emojis         = null;
 var EmojiButton    = null;
 var SendButton     = null;
-var options        = null;
 var activeTalk     = null;
 var attachments    = [];
-var talks          = [];
+var activeContentType = "text";
 
+const typesOfContent = ["text", "mídia", "aúdio", "link"];
 
 window.onload = () => {
+
     messageInput   = document.getElementById("InputMessage");
     EmojiButton    = document.getElementById("EmojiButton");
     messageOptions = document.getElementById("msgOptions");
     messages       = document.getElementById("messages");
-    options        = document.getElementById("options");
     profile        = document.getElementById("profile");
     emojis         = document.getElementById("emojis");
     SendButton     = document.getElementById("send");
@@ -39,12 +39,6 @@ window.onload = () => {
 
     SendButton.addEventListener("click", send_message);
 
-    $("#closeOptions").on("click", () => {
-        options.style.opacity = "0";
-        setTimeout(() => { options.style.zIndex = "-5" }, 420);
-    });
-
-
     $(document).on("keyup", (event) => {
 
         switch (event.key) {
@@ -53,17 +47,13 @@ window.onload = () => {
                 break;
 
             case "Escape":
-                if (options.style.opacity == "0" || !options.style.opacity) {
-                    options.style.opacity = "1";
-                    options.style.zIndex = "10";
 
-                    document.getElementById("optsCloseMsg").style.animationName = "showMsgOptions"
-                    setTimeout(() => { document.getElementById("optsCloseMsg").style.animationName = "hideMsgOptions" }, 2500);
+                if (!document.getElementById("options_frame")) {
+                    $("#options").load("../views/options.html");
                 }
 
                 else {
-                    options.style.opacity = "0";
-                    setTimeout(() => { options.style.zIndex = "-5" }, 420);
+                    $("#options").empty();
                 }
 
                 break;
@@ -138,6 +128,27 @@ window.onload = () => {
         profileinfo.options.status = data;
     });
 };
+
+for (let i of typesOfContent) {
+
+    let typeButton = document.getElementById("typesSelector").appendChild(
+        document.createElement("img")
+    );
+
+    typeButton.className = i == "text" ? "activeContentType" : "contentType";
+    typeButton.src = `../Assets/${i}.png`;
+
+    typeButton.onclick = () => {
+        activeContentType = i;
+
+        document.getElementsByClassName("activeContentType")[0].className = "contentType";
+        document.getElementById("typesSelectorButton").setAttribute("src", `../Assets/${i}.png`);
+        typeButton.className = "activeContentType";
+
+        document.getElementById("typesSelector").style.opacity = 0;
+        document.getElementById("typesSelector").style.zIndex = -5;
+    };
+}
 
 const send_message = () => {
 
@@ -246,7 +257,7 @@ const post_messages = (messages_array) => {
         }
     }
 
-    $(".message").on("click", (event) => {
+    $(".message").on("mousedown", (event) => {
         if (event.button == 2) {
 
             messageOptions.style.top = event.clientY + "px";
@@ -345,4 +356,31 @@ window.api.receive("send_emojis", (_event, data) => {
         messageInput.value += event.currentTarget.innerHTML;
         SendButton.style.opacity = "1";
     });
+});
+
+$("#typesSelectorButton").on("mouseover", () => {
+    document.getElementById("typesSelector").style.opacity = 1;
+    document.getElementById("typesSelector").style.zIndex = 5;
+});
+
+$("#typesSelector").on("mouseleave", () => {
+    document.getElementById("typesSelector").style.opacity = 0;
+    document.getElementById("typesSelector").style.zIndex = -5;
+});
+
+$("#contacts").on("mouseleave", (event) => {
+
+    setTimeout(() => {
+        if (!$("#contacts").is(":hover")) 
+            event.currentTarget.style.transform = "translateY(0%)";
+    }, 400);
+});
+
+$("#contactsbutton").on("click", () => {
+    document.getElementById("contacts").style.transform = "translateY(100%)";
+
+    setTimeout(() => {
+        if (!$("#contacts").is(":hover"))
+            document.getElementById("contacts").style.transform = "translateY(0%)";
+    }, 2100);
 });

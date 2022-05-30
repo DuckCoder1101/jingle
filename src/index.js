@@ -4,7 +4,7 @@
 // Modules and Libraries
 
 const { app, BrowserWindow, autoUpdater, nativeImage, Notification, ipcMain } = require("electron");
-const { quit, new_account, get, set, create_tray, get_messages } = require("./modules");
+const { quit, get, set, create_tray, verify_data } = require("./modules");
 
 const emojis     = require("unicode-emoji-json");
 const isDev      = require("electron-is-dev");
@@ -14,24 +14,21 @@ var profile_data = get("profile");
 var mainWindow = null;
 
 // Other Functions
-
 const wait = time => new Promise(resolve => setTimeout(resolve, time));
 
 // Starts the Jingle
-async function Main(callback) {
+async function Main(sucess) {
   try {
 
-    if (!profile_data || Object.keys(profile_data).length == 0) return new_account();
+    let activeTalks = await profile_data.contacts.filter(c => c.haveAnActiveTalk == true);
 
-
-    let activeTalks = await profile_data.contacts.filter(c => c.haveAnActiveTalk === true);
-
-    // Main Window
+    // Main window
     mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
       opacity: 0,
       title: app.getName(),
+      icon: exports.icon,
       autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: false,
@@ -43,11 +40,9 @@ async function Main(callback) {
     exports.mainWindow = mainWindow;
 
     await mainWindow.loadFile(join(__dirname, "../public/views/index.html"));
-    await mainWindow.setIcon(exports.icon);
     await create_tray();
 
     // Web contents
-
     await mainWindow.webContents.send("send_profile", {
       id: profile_data.id,
       username: profile_data.username,
@@ -59,14 +54,12 @@ async function Main(callback) {
     await mainWindow.webContents.send("send_emojis", emojis);
 
     await mainWindow.setOpacity(1);
-    mainWindow.maximize();
+    await mainWindow.maximize();
 
-    // Successfully created the window
-    await callback(null);
+    await sucess();
 
-    // IPC Main
-
-    ipcMain.on("send_message", (event_, message_info) => {
+    // Ipc and window events
+    ipcMain.on("send_message", (_e, message_info) => {
 
       if (!message_info.content || message_info.content.trim().length == 0) return;
       if (!message_info.contact_id || !message_info.time) return;
@@ -90,7 +83,6 @@ async function Main(callback) {
       contact.messages.push(Message);
     });
 
-
     ipcMain.on("get_messages", (_event, id) => {
 
       let contact = profile_data.contacts.find(contact => contact.id == id);
@@ -99,8 +91,37 @@ async function Main(callback) {
       mainWindow.webContents.send("get_messages", messages);
     });
 
-    // Other events
+    ipcMain.on("options_get_data", (_event, key) => {
 
+      let data = profile_data[key] || profile_data.options[key];
+
+      mainWindow.webContents.send("options_get_data", data);
+    });
+
+    ipcMain.on("options_set_data", async (_event, data) => {
+      try {
+
+        await data.forEach((item) => {
+          if (profile_data[item.key]) {
+            profile_data[item.key] = item.value;
+          }
+
+          else {
+            profile_data.options[item.key] = item.value;
+          }
+        });
+
+        await set("profile", profile_data);
+        mainWindow.webContents.send("options_set_data", true);
+      }
+
+      catch (err) {
+        if (isDev) console.log(err);
+        mainWindow.webContents.send("options_set_data", false);
+      }
+    });
+
+    // Other events
     mainWindow.on("system-context-menu", (event) => {
       event.preventDefault();
     });
@@ -121,7 +142,7 @@ async function Main(callback) {
               <visual>
                 <binding template="ToastGeneric">
                   <text hint-maxLines="1">${app.getName()}</text>
-                  <text>O app está sendo executado em segundo plano.</text>
+                  <text>Jingle está sendo executado em segundo plano.</text>
                   <image placement="appLogoOverride" src="${join(__dirname, "../public/Icon.png")}"/>
                 </binding>
               </visual>
@@ -146,22 +167,25 @@ async function Main(callback) {
           body: "Jingle está sendo executado em segundo plano.",
           icon: exports.icon,
           timeoutType: "default",
-          actions: [{ type: "button", text: "Não exibir novamente." }, { type: "button", text: "Ok" }]
+          actions: [
+            { type: "button", text: "Não exibir novamente." }, 
+            { type: "button", text: "Ok" }
+          ]
         });
       }
 
       await notification.show();
-      await wait(12000);
+      await wait(5000);
     
       if (notification) notification.close();
     });
     
     setInterval(() => set("profile", profile_data), 1000 * 60 * 2.5);
-    setInterval(get_messages, 5000);
+    //setInterval(get_messages, 5000);
   }
 
   catch (err) {
-    callback(err);
+    quit(err);
   }
 }
 
@@ -173,20 +197,21 @@ app.on("ready", async () => {
     await app.setAppUserModelId(process.execPath);
     await app.setName("Jingle");
 
-    // Set the title of the process
     process.title = await app.getName();
 
+    await verify_data();
 
     // Loading Screen
     const loagingScreen = new BrowserWindow({
-      width: 490,
-      height: 320, 
+      width: 400,
+      height: 300, 
       title: app.getName(),
       autoHideMenuBar: true,
       frame: false, 
       center: true, 
       closable: false, 
       opacity: 0,
+      icon: exports.icon,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
@@ -196,25 +221,17 @@ app.on("ready", async () => {
 
     // Load file and set the opacity to 1
     await loagingScreen.loadFile(join(__dirname, "../public/views/loading.html"));
-    loagingScreen.setOpacity(1);
-
+    await loagingScreen.setOpacity(1);
 
     // Dev or not
     if (!isDev) {
-      await autoUpdater.setFeedURL({ "url": "", "serverType": "default" });
-      await autoUpdater.checkForUpdates();
+      await autoUpdater.setFeedURL({ url: "" });
+      autoUpdater.checkForUpdates();
     }
 
     else {
-
-      await wait(5500);
-
-      /*Main((err) => {
-
-        if (err) return quit(err);
-
-        loagingScreen.destroy();
-      });*/
+      await wait(4500);
+      await Main(() => loagingScreen.destroy());
     }
   }
 
@@ -227,23 +244,43 @@ app.on("activate", () => {
 
   let Windows = BrowserWindow.getAllWindows();
 
-  if (Windows.length == 0) {
+  if (Windows.length == 0) 
     app.emit("ready");
-  }
 
-  else {
+  else 
     Windows[0].maximize();
-  }
 });
 
 
 // Updater
 
+autoUpdater.on("checking-for-update", () => {
+  BrowserWindow.getAllWindows()[0].webContents.send("checking-updates");
+});
+
+autoUpdater.on("update-not-available", () => {
+  if (!mainWindow) 
+    Main(() => BrowserWindow.getAllWindows()[0].destroy());
+});
+
+autoUpdater.on("update-available", () => {
+  if (!mainWindow)
+    BrowserWindow.getAllWindows()[0].webContents.send("update-available");
+});
+
+autoUpdater.on("update-downloaded", () => {
+  if (!mainWindow)
+    autoUpdater.quitAndInstall();
+});
+
+autoUpdater.on("error", (err) => quit(err));
+
 
 // Exports
-
 exports.profile_data = profile_data;
 
 exports.icon = nativeImage
   .createFromPath(join(__dirname, "../public/icon.png"))
   .resize({ width: 500, height: 500, quuality: "better" });
+
+exports.update_url = `/update/${process.platform}/${app.getVersion()}`

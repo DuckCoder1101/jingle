@@ -1,5 +1,3 @@
-
-
 const {
     app,
     BrowserWindow,
@@ -23,7 +21,8 @@ const file_exports = {
         if (error && isDev) console.log(error.message);
         if (menuTray) menuTray.destroy();
 
-        BrowserWindow.getAllWindows()[0].removeAllListeners("close");
+        if (BrowserWindow.getAllWindows()[0]) 
+            BrowserWindow.getAllWindows()[0].removeAllListeners("close");
 
         storage.set("profile", Index.profile_data, (err) => {
 
@@ -214,18 +213,39 @@ const file_exports = {
 
     verify_data: async () => {
 
-        let profile_data = file_exports.get("profile");
-        let schema = ["username", "id", "email", "avatar", "contacts", "options"];
+        try {
+            let profile_data = file_exports.get("profile");
+            let schema = ["username", "a", "id", "email", "contacts", "options"];
 
-        for (let info of schema) {
+            let missingData = false;
 
-            if (!profile_data[info]) {
+            for (let info of schema) {
+
+                if (!profile_data || !profile_data[info]) {
+                    missingData = true;
+                    break;
+                }
+
+                else {
+                    continue;
+                }
+            }
+
+            if (missingData) {
+                
                 await file_exports.set("profile", {
-                    username: "",
-                    id: "",
-                    email: "",
+                    username: "DuckCoder",
+                    id: "1101",
+                    email: "crisfavaedu@gmail.com",
                     avatar: "",
-                    contacts: [],
+                    contacts: [
+                        {
+                            username: "PessoaAleatoria05",
+                            haveAnActiveTalk: true,
+                            id: "05506",
+                            messages: []
+                        }
+                    ],
                     options: {
                         notify_when_close: true,
                         status: "online",
@@ -236,9 +256,11 @@ const file_exports = {
                         old: ""
                     }
                 });
-
-                file_exports.quit();
             }
+        }
+
+        catch (err) {
+            file_exports.quit(err);
         }
     },
 };
