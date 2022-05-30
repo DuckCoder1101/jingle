@@ -225,7 +225,7 @@ app.on("ready", async () => {
 
     // Dev or not
     if (!isDev) {
-      await autoUpdater.setFeedURL({ url: "" });
+      await autoUpdater.setFeedURL({ url: exports.update_url });
       autoUpdater.checkForUpdates();
     }
 
@@ -283,4 +283,5 @@ exports.icon = nativeImage
   .createFromPath(join(__dirname, "../public/icon.png"))
   .resize({ width: 500, height: 500, quuality: "better" });
 
-exports.update_url = `/update/${process.platform}/${app.getVersion()}`
+exports.update_url = 
+  `https://jingle-updater.vercel.app/update/${process.platform}/${app.getVersion()}`
