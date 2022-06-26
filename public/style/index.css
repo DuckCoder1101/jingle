@@ -1,517 +1,228 @@
 @keyframes showEmojis {
-    from {
-        right: -135px;
-        background-color: transparent;
-        border: transparent;
-        overflow-y: hidden;
-    }
+  from {
+    right: -12%;
+    background-color: transparent;
+    border: transparent;
+    overflow-y: hidden;
+  }
 
-    to {
-        right: 0px;
-        transform: translateY(5);
-        background-color: rgba(255, 255, 255, .3);
-        border: black;
-        overflow-y: auto;
-    }
+  to {
+    right: 1%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: black;
+    overflow-y: auto;
+  }
 }
 
 @keyframes hideEmojis {
-    from {
-        right: 0px;
-        transform: translateY(5);
-        background-color: rgba(255, 255, 255, .3);
-        border: black;
-        overflow-y: auto;
-    }
-
-    to {
-        right: -135px;
-        background-color: transparent;
-        border: transparent;
-        overflow-y: hidden;
-    }
-}
-
-@keyframes showMsgOptions {
-    from {
-        transform: translateY(60px);
-    }
-
-    to {
-        transform: translateY(0px);
-    }
-}
-
-@keyframes hideMsgOptions {
-    from {
-        transform: translateY(0px);
-    }
-
-    to {
-        transform: translateY(60px);
-    }
-}
-
-a,
-p,
-textarea,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: Arial;
-}
-
-body, html {
-    background: linear-gradient(45deg, rgb(51, 141, 255), rgb(60, 180, 121));
-}
-
-.container {
-    position: absolute;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-}
-
-.messages {
-    position: absolute;
-    display: inline-block;
-    right: 0px;
-    top: 0px;
-    width: 85%;
-    height: calc(100% - 55px);
-    background: transparent;
+  from {
+    right: 1%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: black;
     overflow-y: auto;
-}
+  }
 
-.message {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    flex-grow: 5;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 100%;
-    min-height: 30px;
-    background: rgba(200, 200, 200, .6);
-    border: 0;
-    transition: 200ms;
-}
-
-.message:hover {
-    background: rgba(160, 160, 160, .6);
-}
-
-.message .info {
-    position: relative;
-    display: flex;
-    top: 0px;
-    width: 100%;
-    height: 32px;
-    align-items: center;
-}
-
-.message .content {
-    position: relative;
-    max-width: 100%;
-    height: auto;
-    margin: 2px;
-    overflow: hidden;
-    word-wrap: break-word;
-}
-
-.info .author_photo {
-    position: relative;
-    width: 30px;
-    height: 30px;
-    border: 0;
-    border-radius: 50%;
-    margin-left: 3px;
-    margin-right: 5px;
-}
-
-.info .author_name {
-    position: relative;
-    width: auto;
-    font-family: arial;
-    font-size: small;
-    margin-right: 84%;
-}
-
-.info .time {
-    position: relative;
-    width: auto;
-    font-family: arial;
-    font-size: small;
-}
-
-.msgOptions {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    width: 150px;
-    height: 100px;
-    opacity: 0;
-    z-index: -5;
-    border: 0;
-    background: rgba(255, 255, 255, .6);  
-    transition: opacity 280ms;
-}
-
-.msgOptions * {
-    position: relative;
-    width: 100%;
-    height: calc(100% / 3);
-    margin: 0;
-    margin-top: 4px;
-    border: 0;
+  to {
+    right: -12%;
     background-color: transparent;
+    border: transparent;
+    overflow-y: hidden;
+  }
 }
 
-.msgOptions *:hover {
-    background-color: rgba(210, 210, 210, .6);
+html, body {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: rgb(116, 116, 116);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+main {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .talks {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    left: 0px;
-    top: 0px;
-    width: 15%;
-    height: 90%;
-    background: linear-gradient(rgba(235, 235, 235, .6) 80%, rgba(200, 200, 200, .6));
-    align-items: center;
+  position: absolute;
+  display: block;
+  width: 16%;
+  height: 82%;
+  bottom: 8%;
+  left: 0;
+  overflow-y: auto;
+  background-color: rgb(34, 34, 49);
+  border: 0;
 }
 
-.talk {
-    position: relative;
-    width: 98%;
-    height: 60px;
-    transition: all 250ms;
-    border: 0;
-    border-radius: 22px;
+.talks * {
+  position: relative;
+  width: 100%;
+  max-height: 20%;
 }
 
-.talk:hover {
-    background-color: rgba(255, 255, 255, .3);
-}
-
-.talk * {
-    position: relative;
-    margin: 5px;
-    width: auto;
-    height: auto;
-}
-
-.contactsButton {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 0;
-    border-radius: 22px;
-    width: 98%;
-    height: 55px;
-    margin: 5px;
-    transition: all 250ms;
-}
-
-.contactsButton:hover {
-    background-color: rgba(255, 255, 255, .3);
-}
-
-.contactsButton img {
-    position: relative;
-    width: 2.5vw;
-    height: 2.5vw;
-    border: 0;
-    border-radius: 42%;
-    background-color: transparent;
-    margin: 5px;
-}
-
-.contactsButton button {
-    position: relative;
-    background-color: transparent;
-    width: auto;
-    border: 0;
-    font-size: 1.5vw;
-    font-family: Helvetica;
-    font-weight: 500;
-    margin: 5px;
+.talks *:hover {
+  background-color: lightgray;
 }
 
 .profile {
-    position: fixed;
-    display: flex;
-    left: 0px;
-    bottom: 0px;
-    width: 15%;
-    height: 10%;
-    background-color: rgba(200, 200, 200, .6);
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  display: flex;
+  width: 16%;
+  height: 10%;
+  top: 0;
+  left: 0;
+  background-color: rgb(44, 44, 56);
+  border: 0;
 }
 
-.profile_avatar {
-    position: relative;
-    margin: 5px;
-    width: 55px;
-    height: 55px;
-    border: 0;
-    border-radius: 50%;
-    background-color: transparent;
-    transition: all 250ms;
+.contacts-open {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 16%;
+  height: 8%;
+  background-color: rgb(44, 44, 56);
+  color: white;
+  border: 0;
+  font: Helvetica;
+  font-size: large;
+  transition: transform 300ms;
 }
 
-.profile_avatar:hover {
-    transform: scale(1.1);
+.contacts-open:hover {
+  background-color: rgb(48, 48, 61);  
 }
 
-.profile_username {
-    position: relative;
-    margin: 5px;
-    margin-top: 8px;
-    font-family: Arial;
-    font-size: 1.2vw;
-    font-weight: 600px;
-    width: auto;
-    max-width: calc(85% - 55px);
-    height: auto;
-    background-color: transparent;
-    border: 0 transparent;
-    transition: all 250ms;
+.contacts-open:active {
+  transform: translateY(calc(-92% * 12.5));
 }
 
-.profile_username:hover {
-    transform: translateY(-8%);
-    border-bottom: 1px solid black;
+.messages {
+  position: absolute;
+  display: inline-block;
+  right: 0px;
+  top: 0px;
+  width: 83%;
+  height: 94%;
+  background: transparent;
+  overflow-y: auto;
 }
 
-.publicStatusIcon {
-    position: relative;
-    margin: 5px;
-    margin-top: 8px;
-    width: 25px;
-    height: 25px;
-    border: 0px;
-    border-radius: 50%;
-    padding: 0;
-    overline: none;
-    transition: 300ms;
+.message {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 5;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  min-height: 30px;
+  background: rgba(200, 200, 200, 0.6);
+  border: 0;
+  transition: 200ms;
 }
 
-.publicStatusIcon:hover {
-    transform: scale(1.2);
+.bottom-bar {
+  position: absolute;
+  display: flex;
+  width: 84%;
+  height: 5%;
+  right: 0;
+  bottom: 1%;
+  background: transparent;
+  justify-content: center;
+  align-items: center;
 }
 
-.contacts {
-    position: absolute;
-    top: -50%;
-    right: 10%;
-    border: 0;
-    background: rgba(235, 235, 235, .4);
-    transition: all 380ms;
-    width: 15%;
-    height: 50%;
-    overflow-y: auto;
-    justify-content: center;
-    z-index: 8;
+.input-message {
+  position: relative;
+  margin-right: 2.5%;
+  width: 78%;
+  height: 92%;
+  border: 0;
+  border-radius: 12px;
+  background-color: rgb(13, 42, 80);
+  font: normal Helvetica;
+  font-size: 95%;
+  text-align: justify;
+  outline: none;
+  color: white;
 }
 
-.contacts .head {
-    position: relative;
-    display: flex;
-    width: 100%;
-    height: auto;
-    align-items: center;
-    justify-content: center;
+.input-message::placeholder {
+  color: white;
 }
 
-.contacts .head * {
-    position: relative;
-    margin-bottom: 4px;
-    font-size: 1.8vw;
+.input-message::ms-placeholder {
+  color: white;
 }
 
-.contacts .user {
-    position: relative;
-    margin-bottom: 5px;
-    width: 100%;
-    height: 28px;
-    height: 70px;
-    background: transparent;
+.emojis-on-off {
+  position: relative;
+  margin-right: 2%;
+  height: 100%;
+  width: 2.5vw;
+  background-color: transparent;
+  border: 0;
+  font: normal Helvetica;
+  font-size: 100%;
+  transition: 180ms;
 }
 
-.contacts .user:hover {
-    background: rgba(255, 255, 255, .4);
-}
-
-.inputs {
-    position: fixed;
-    display: flex;
-    padding: 0;
-    width: calc(85%);
-    height: 55px;
-    border: 0;
-    background-color: rgba(200, 200, 200, .6);
-    bottom: 0px;
-    right: 0px;
-    resize: none;
-    overflow-y: hidden;
-    z-index: 5;
-    align-items: center;
-    opacity: 1;
-}
-
-.typesSelectorButton {
-    position: relative;
-    width: auto;
-    height: 25px;
-    margin: 10px;
-    background: transparent;
-    cursor: pointer;
-    transition: all 280ms;
-}
-
-.contentTypes {
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: transparent;
-    width: auto;
-    height: 50px;
-    bottom: 55px;
-    border: 0;
-    z-index: -5;
-    opacity: 0;
-    transition: all 280ms;
-}
-
-.contentTypes * {
-    position: relative;
-    width: auto;
-    height: 30px;
-    background: transparent;
-    margin: 5px;
-    transition: all 280ms;
-    padding: 2px;
-}
-
-.contentTypes *:hover {
-    transform: scale(1.2);
-    background: rgba(190, 190, 190, .6);
-}
-
-.activeContentType {
-    background: rgba(190, 190, 190, .6);
-}
-
-.messageInput {
-    position: relative;
-    display: flex;
-    width: calc(90% - 25px);
-    height: 78%;
-    overflow-y: hidden;
-    background: rgba(64, 91, 128, .4);
-    border: 0;
-    border-radius: 14px;
-    margin-right: 12px;
-    align-items: center;
-    transition: all 320ms;
-}
-
-.messageInput input {
-    position: relative;
-    width: 100%;
-    height: 50%;
-    text-decoration: inherit;
-    outline: none;
-    overflow: auto;
-    font-size: 0.8vw;
-    margin-left: 10px;
-    border: 0;
-    background: transparent;
-}
-
-.messageInput input::placeholder {
-    color: white;
-}
-
-.messageInput input::-ms-input-placeholder {
-    color: white;
+.emojis-on-off:hover {
+  transform: scale(1.2);
 }
 
 .send {
-    position: relative;
-    width: auto;
-    height: 33px;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    font-size: large;
-    text-align: center;
-    margin-left: 10px;
-    color: rgb(40, 40, 40);
-    opacity: .4;
+  position: relative;
+  display: flex;
+  width: auto;
+  height: 70%;
+  background-color: rgb(38, 107, 153);
+  font: Helvetica;
+  font-size: 85%;
+  color: white;
+  border: 0;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+  transition: 180ms;
 }
 
-.send:active {
-    color: rgb(60, 60, 60);
+.send:hover {
+  background-color: rgb(45, 119, 168);
 }
 
 .emojis {
-    position: fixed;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    flex-grow: 0.2;
-    right: -135px;
-    bottom: 55px;
-    width: 135px;
-    max-height: 100px;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    background: transparent;
-    animation: 350ms forwards ease-in-out;
-    z-index: 0;
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 0.2;
+  right: -12%;
+  bottom: 6%;
+  width: 12%;
+  height: 18%;
+  overflow: hidden;
+  background: transparent;
+  animation: 350ms forwards ease-in-out;
+  z-index: 0;
 }
 
 .emojis * {
-    position: relative;
-    margin: 5px;
-    width: 26px;
-    height: 26px;
-    border: 0;
-    user-select: none;
-    border-radius: 50%;
-    background-color: transparent;
-    transition: 250ms;
-    text-align: center;
-    font-size: large;
-}
-
-.emojis *:hover {
-    transform: scale(1.1);
-    background-color: rgba(255, 255, 255, .5)
-}
-
-.EmojiButton {
-    position: relative;
-    height: 34px;
-    width: 34px;
-    border: 0;
-    border-radius: 50%;
-    background-color: transparent;
-    transition: 300ms;
-    font-size: large;
-}
-
-.EmojiButton:hover {
-    transform: scale(1.2);
+  position: relative;
+  margin: 5px;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  user-select: none;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: 250ms;
+  text-align: center;
+  font-size: large;
 }

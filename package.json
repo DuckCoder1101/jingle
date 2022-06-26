@@ -1,7 +1,7 @@
 {
   "name": "jingle",
   "productName": "jingle",
-  "version": "1.0.0",
+  "version": "0.1.9",
   "description": "Jingle, o app de mensagens de total segurança!",
   "main": "src/index.js",
   "type": "commonjs",
@@ -22,7 +22,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "talk_center_new_version"
+            "name": "jingle"
           }
         },
         {

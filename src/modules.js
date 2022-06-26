@@ -1,268 +1,200 @@
 const {
-    app,
-    BrowserWindow,
-    Tray, Menu,
-    ipcMain,
-    dialog,
-    Notification } = require("electron");
+  app,
+  BrowserWindow,
+  Tray,
+  Menu,
+  //ipcMain,
+  dialog,
+  //Notification,
+} = require("electron");
 
 const storage = require("electron-json-storage");
-const isDev = require("electron-is-dev");
+//const isDev = require("electron-is-dev");
 const Index = require("./index");
-const axios = require("axios");
-const { join } = require("path");
+//const { join } = require("path");
+//const axios = require("axios");
 
-let menuTray = null;
+var menuTray = null;
 
 const file_exports = {
+  quit: async (error = null) => {
+    let res = await file_exports.set("profile", Index.profile_data);
+    console.log(error);
 
-    quit: (error = null) => {
+    if (!res && process.platform !== "darwin")
+      BrowserWindow.getAllWindows()[0].removeAllListeners("close"),
+        menuTray.destroy(),
+        app.quit();
+    else if (res) {
+      let output = dialog.showMessageBoxSync(BrowserWindow.getAllWindows[0], {
+        title: "Data Error",
+        message:
+          "Um erro ocorreu enquanto salvavamos o seu perfil, tente salvar novamente, ou saia e perca alguns dados.",
+        type: "error",
+        buttons: ["Tentar novamente", "Sair"],
+      });
 
-        if (error && isDev) console.log(error.message);
-        if (menuTray) menuTray.destroy();
+      if (output == "Tentar novamente") this.quit();
+      else if (output == "Sair" && process.platform != "darwin")
+        BrowserWindow.getAllWindows()[0].removeAllListeners("close"),
+          menuTray.destroy(),
+          app.quit();
+    }
+  },
 
-        if (BrowserWindow.getAllWindows()[0]) 
-            BrowserWindow.getAllWindows()[0].removeAllListeners("close");
+  get: (key = null) => {
+    if (!key) return new Error("No key specified.");
 
-        storage.set("profile", Index.profile_data, (err) => {
+    let data = storage.getSync(key);
+    return data;
+  },
 
-            if (err) {
-                let result = dialog.showMessageBoxSync(BrowserWindow.getAllWindows[0], {
-                    title: "Data Error",
-                    message: "Um erro ocorreu enquanto salvavamos o seu perfil, tente salvar novamente, ou saia e perca alguns dados. As suas mensagens estão seguras.",
-                    type: "error",
-                    buttons: ["Tentar novamente", "Sair"]
-                });
+  set: async (key = null, data = null) => {
+    if (!key || !data) return new Error("No key or value specified.");
 
-                if (result == "Tentar novamente") this.quit();
-                else if (process.platform != "darwin") {
-                    app.quit();
-                }
-            }
+    let error = null;
 
-            else if (process.platform != "darwin") {
-                app.quit();
-            }
-        });
-    },
+    await new Promise((resolve, reject) => {
+      storage.set(key, data, (err) => {
+        if (err) reject(err);
+        resolve();
+      });
+    });
 
-    get: (key = null) => {
+    return error;
+  },
 
-        if (!key) return new Error("No key specified.");
+  new_account: () => {
+    //
+  },
 
-        let data = storage.getSync(key);
-        return data;
-    },
+  create_tray: () => {
+    menuTray = new Tray(Index.icon);
 
-    set: async (key = null, data = null) => {
-        try {
-            if (!key || !data) return new Error("No key or value specified.");
-            await storage.set(key, data);
-        }
+    const selectStatus = (code) => {
+      if (code == 1) {
+        Index.profile_data.options.status = "online";
 
-        catch (err) {
-            this.quit(err);
-        }
-    },
+        BrowserWindow.getAllWindows()[0].webContents.send(
+          "change_status",
+          "online"
+        );
+      } else if (code == 2) {
+        Index.profile_data.options.status = "nao_perturbe";
 
-    new_account: () => {
-        let window = new BrowserWindow({
-            width: 800,
-            height: 600,
-            title: app.getName(),
-            fullscreen: false,
-            autoHideMenuBar: true,
-            webPreferences: {
-                nodeIntegration: false,
-                contextIsolation: true
-            }
-        });
+        BrowserWindow.getAllWindows()[0].webContents.send(
+          "change_status",
+          "nao_perturbe"
+        );
+      } else {
+        Index.profile_data.options.status = "invisivel";
 
-        window.loadFile(join(__dirname, "../public/views/account.html"));
-        window.maximize();
+        BrowserWindow.getAllWindows()[0].webContents.send(
+          "change_status",
+          "invisivel"
+        );
+      }
+    };
 
-        ipcMain.on("account_form", (_event, data) => {
-            let { account, error } = axios.default.post("", data);
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: "Status",
+        type: "submenu",
+        id: "status",
+        submenu: [
+          {
+            label: "Online",
+            id: "status",
+            type: "radio",
+            checked:
+              Index.profile_data.options.status == "online" ? true : false,
+            click: () => selectStatus(1),
+          },
+          {
+            label: "Invisível",
+            id: "status",
+            type: "radio",
+            checked:
+              Index.profile_data.options.status == "invisivel" ? true : false,
+            click: () => () => selectStatus(2),
+          },
+          {
+            label: "Não perturbe!",
+            id: "status",
+            checked:
+              Index.profile_data.options.status == "nao_perturbe"
+                ? true
+                : false,
+            type: "radio",
+            click: () => () => selectStatus(3),
+          },
+        ],
+      },
+      {
+        label: "Ver Conversas",
+        type: "normal",
+        click: () => BrowserWindow.getAllWindows()[0].maximize(),
+      },
+      {
+        label: "Fechar",
+        type: "normal",
+        click: () => file_exports.quit(),
+      },
+    ]);
 
-            if (error || !account) return this.shut_down(error);
-            this.set("profile", account);
-        });
-    },
+    menuTray.setToolTip(app.getName());
+    menuTray.setContextMenu(contextMenu);
+  },
 
-    create_tray: () => {
-        menuTray = new Tray(Index.icon);
+  get_messages: async () => {
+    //.
+  },
 
-        const contextMenu = Menu.buildFromTemplate([
+  verify_data: async () => {
+    try {
+      let profile_data = file_exports.get("profile");
+      let schema = ["username", "avatar", "id", "email", "contacts", "options"];
+
+      let missingData = false;
+      
+      // for (let info of schema) {
+      //   if (!profile_data || !profile_data[info]) {
+      //     missingData = true;
+      //     break;
+      //   } else {
+      //     continue;
+      //   }
+      // }
+
+      if (missingData) {
+        await file_exports.set("profile", {
+          username: "DuckCoder",
+          id: "1101",
+          email: "crisfavaedu@gmail.com",
+          avatar: "",
+          contacts: [
             {
-                label: 'Status', type: "submenu", id: "status", submenu:
-                    [
-                        {
-                            label: "Online", id: "online", type: "radio", checked: Index.profile_data.options.status == "online" ? true : false, click: () => {
-                                Index.profile_data.options.status = "online";
-
-                                contextMenu.getMenuItemById("status").submenu.items.forEach(item => item.checked = false);
-                                contextMenu.getMenuItemById("status").submenu.getMenuItemById("online").checked = true;
-
-                                BrowserWindow.getAllWindows()[0].webContents.send("change_status", "online");
-                            }
-                        },
-                        {
-                            label: "Invisível", id: "invisivel", type: "radio", checked: Index.profile_data.options.status == "invisivel" ? true : false, click: () => {
-                                Index.profile_data.options.status = "invisivel";
-
-                                contextMenu.getMenuItemById("status").submenu.items.forEach(item => item.checked = false);
-                                contextMenu.getMenuItemById("status").submenu.getMenuItemById("invisivel").checked = true;
-
-                                BrowserWindow.getAllWindows()[0].webContents.send("change_status", "invisivel");
-                            }
-                        },
-                        {
-                            label: "Não perturbe!", id: "nao_perturbe", checked: Index.profile_data.options.status == "nao_perturbe" ? true : false, type: "radio", click: () => {
-                                Index.profile_data.options.status = "nao_perturbe";
-
-                                contextMenu.getMenuItemById("status").submenu.items.forEach(item => item.checked = false);
-                                contextMenu.getMenuItemById("status").submenu.getMenuItemById("nao_perturbe").checked = true;
-
-                                BrowserWindow.getAllWindows()[0].webContents.send("change_status", "nao_perturbe");
-                            }
-                        }
-                    ]
+              username: "PessoaAleatoria05",
+              haveAnActiveTalk: true,
+              id: "05506",
+              messages: [],
             },
-            {
-                label: 'Ver Conversas', type: "normal", click: () => {
-                    BrowserWindow.getAllWindows()[0].maximize();
-                }
-            },
-            {
-                label: "Fechar", type: "normal", click: () => {
-                    file_exports.quit()
-                }
-            }
-        ]);
-
-        menuTray.setToolTip(app.getName());
-        menuTray.setContextMenu(contextMenu);
-    },
-
-    get_messages: async () => {
-        try {
-            let response = await axios.default.post("", {
-                profile: {
-                    username: Index.profile_data.username,
-                    id: Index.profile_data.id
-                },
-                session: Index.profile_data.session.new
-            });
-
-            if (!response.data.talks || response.status != 200 || Object.keys(response.data.talks).length == 0) return;
-
-            let messages_authors = [];
-
-            for (let talk of Object.keys(response.data.talks)) {
-                let talkData = Index.profile_data.contacts.find(c => c.id == talk.id);
-
-                if (!talkData) continue;
-
-                if (!talkData.haveAnActiveTalk) {
-                    talkData.haveAnActiveTalk = true;
-                    talkData.messages.push(talk.messages);
-                    BrowserWindow.getAllWindows()[0].webContents.send("updateContacts");
-                }
-
-                else {
-                    talkData.messages.push(talk.messages);
-                }
-
-                messages_authors.push(talkData.username);
-            }
-
-            let notification = new Notification({
-                title: app.getName(),
-                subtitle: "Você tem novas mensagens.",
-                body: messages_authors.join(", "),
-                icon: Index.icon,
-                timeoutType: "default",
-                urgency: "normal"
-            });
-
-            notification.show();
-
-            setTimeout(() => {
-                if (!notification) return;
-                notification.close();
-            }, 15000);
-        }
-
-        catch (err) {
-
-            if (isDev) return console.log(err);
-
-            let res = dialog.showMessageBoxSync(BrowserWindow.getAllWindows()[0], {
-                title: "Erro de pesquisa!",
-                message: "Um erro ocorreu enquanto buscavamos suas mensagens, entre em contacto com o suporte para saber mais.",
-                buttons: ["Ok", "Reiniciar o Jingle"],
-                type: "error"
-            });
-
-            if (res == 1) {
-                file_exports.quit();
-                app.relaunch();
-            }
-        }
-    },
-
-    verify_data: async () => {
-
-        try {
-            let profile_data = file_exports.get("profile");
-            let schema = ["username", "a", "id", "email", "contacts", "options"];
-
-            let missingData = false;
-
-            for (let info of schema) {
-
-                if (!profile_data || !profile_data[info]) {
-                    missingData = true;
-                    break;
-                }
-
-                else {
-                    continue;
-                }
-            }
-
-            if (missingData) {
-                
-                await file_exports.set("profile", {
-                    username: "DuckCoder",
-                    id: "1101",
-                    email: "crisfavaedu@gmail.com",
-                    avatar: "",
-                    contacts: [
-                        {
-                            username: "PessoaAleatoria05",
-                            haveAnActiveTalk: true,
-                            id: "05506",
-                            messages: []
-                        }
-                    ],
-                    options: {
-                        notify_when_close: true,
-                        status: "online",
-                        statusText: ""
-                    },
-                    session: {
-                        new: "",
-                        old: ""
-                    }
-                });
-            }
-        }
-
-        catch (err) {
-            file_exports.quit(err);
-        }
-    },
+          ],
+          options: {
+            notify_when_close: true,
+            status: "online",
+            statusText: "",
+          },
+          session: {
+            new: "",
+            old: "",
+          },
+        });
+      }
+    } catch (err) {
+      file_exports.quit(err);
+    }
+  },
 };
 
-module.exports = file_exports
+module.exports = file_exports;

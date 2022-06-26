@@ -1,77 +1,60 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Jingle</title>
+    <meta charset="UTF-8" />
 
-<head>
-  <title>Jingle</title>
-  <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../style/index.css" />
+  </head>
 
-  <link rel="stylesheet" href="../style/global.css">
-  <link rel="stylesheet" href="../style/index.css">
-
-</head>
-
-<body>
-  <div class="container">
-
+  <body>
     <div id="options" class="options"></div>
 
-    <div class="msgOptions" id="msgOptions">
-      <button id="delete">Deletar</button>
-      <button id="read">Ler</button>
-      <button id="find">Pesquisar</button>
-    </div>
-
-    <div class="contacts" id="contacts">
-      
-      <div class="head">
-        <img class="contactsIcon" src="../contacts.png" width="80px" height="80px">
-        <h2>Contatos</h2>
+    <main>
+      <div class="msgOptions" id="msgOptions">
+        <button id="delete">Deletar</button>
+        <button id="read">Ler</button>
+        <button id="find">Pesquisar</button>
       </div>
 
-      <div class="user">
-        <h2>User</h2>
-        <p>Olá :)</p>
+      <div class="emojis" id="emojis"></div>
+      <div class="contacts" id="contacts"></div>
+      <div class="messages" id="messages"></div>
+      <div class="talks" id="talks"></div>
+
+      <div class="profile" id="profile">
+        <img class="profile-avatar" id="avatar" alt="avatar" />
+        <div class="public-status-icon" id="publicStatus"></div>
+        <b class="profile-username" id="username"></b>
       </div>
 
-    </div>
+      <button class="contacts-open">CONTATOS</button>
 
-    <div class="messages" id="messages"></div>
+      <form class="bottom-bar" action="#">
+        <input
+          type="text"
+          id="InputMessage"
+          class="input-message"
+          placeholder="Selecione ou crie uma conversa"
+          readonly
+        />
 
-    <div class="talks" id="talks">
+        <button class="emojis-on-off" id="EmojiButton"></button>
+        <button class="send" id="send">
+          Enviar <img 
+            src="../transparent.png" alt="" 
+            width="30"
+            height="30" />
+        </button>
+      </form>
+    </main>
 
-      <div class="contactsButton" id="contactsbutton">
-        <img src="../contacts.png" alt="">
-        <h2>Contatos</h2>
-      </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
 
-    </div>
-
-    <div class="profile" id="profile">
-      <img class="profile_avatar" src="" id="avatar" alt="avatar">
-      <div class="publicStatusIcon" id="publicStatus"></div>
-      <b class="profile_username" id="username"></b>
-    </div>
-
-    <div class="inputs">
-
-      <img class="typesSelectorButton" id="typesSelectorButton" src="../Assets/Text.png" />
-      <div class="contentTypes" id="typesSelector"></div>
-
-      <div class="messageInput">
-        <input type="text" id="InputMessage" placeholder="Selecione ou crie uma conversa" readonly>
-      </div>
-
-      <button class="EmojiButton" id="EmojiButton"></button>
-      <button class="send" id="send">Enviar</button>
-    </div>
-
-    <div class="emojis" id="emojis"></div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-  <script src="../scripts/index.script.js"></script>
-</body>
-
+    <script src="../scripts/index.script.js" async="true"></script>
+  </body>
 </html>
